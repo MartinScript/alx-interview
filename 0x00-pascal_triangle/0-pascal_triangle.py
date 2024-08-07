@@ -30,14 +30,22 @@
   return triangle"""
   
 def pascal_triangle(n):
-  row = [1]
-  triangle = [[1]]
-  if n <= 0:
-    return [[]]
-  for i in range(n-1):
-    row = [i+j for i,j in zip([0] + row, row + [0])]
-    triangle.append(row)
-  return triangle
+  try:
+      n = int(n)
+      row = [1]
+      triangle = [[1]]
+      if n <= 0:
+          return [[]]
+      for i in range(n-1):
+          row = [i+j for i,j in zip([0] + row, row + [0])]
+          triangle.append(row)
+        
+      return triangle
+  except (ValueError, TypeError) as e:
+      print("{0} is not an integer, argument must be an interger".format(n))
+      return None
+
+  
 
 def print_triangle(triangle):
     """
@@ -48,4 +56,4 @@ def print_triangle(triangle):
 
 
 if __name__ == "__main__":
-    print_triangle(pascal_triangle(10))
+    print_triangle(pascal_triangle(7))
