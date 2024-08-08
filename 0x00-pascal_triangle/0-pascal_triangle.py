@@ -28,14 +28,6 @@ def pascal_triangle(n):
         
     return triangle
 
-def print_triangle(triangle):
-    """
-    Print the triangle
-    """
-    for row in triangle:
-        print("[{}]".format(",".join([str(x) for x in row])))
-
-
 #first implementation but not efficient
 """def pascal_generator(lst):
   for i in range(len(lst)-1):
@@ -49,7 +41,3 @@ def print_triangle(triangle):
     triangle.append(prev_lst)
   
   return triangle"""
-
-
-if __name__ == "__main__":
-    print_triangle(pascal_triangle(5))
