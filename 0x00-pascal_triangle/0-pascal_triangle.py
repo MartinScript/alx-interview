@@ -16,22 +16,28 @@ def pascal_triangle(n):
     Raises:
     ValueError: If n is not an integer.
     """
-    try:
-        n = int(n)
-        row = [1]
-        triangle = [[1]]
-        if n <= 0:
-            return [[]]
+    if not isinstance(n, int):
+      raise TypeError("{0} is not an integer, argument must be an interger".format(n))
+    else:
+      row = [1]
+      triangle = [[1]]
+      if n <= 0:
+        return [[]]
+      else:
         for i in range(n-1):
-            row = [i+j for i,j in zip([0] + row, row + [0])]
-            triangle.append(row)
+          row = [i+j for i,j in zip([0] + row, row + [0])]
+          triangle.append(row)
         
         return triangle
-    except (ValueError, TypeError) as e:
-        print("{0} is not an integer, argument must be an interger".format(n))
-        return None
 
-  
+def print_triangle(triangle):
+    """
+    Print the triangle
+    """
+    for row in triangle:
+        print("[{}]".format(",".join([str(x) for x in row])))
+
+
 #first implementation but not efficient
 """def pascal_generator(lst):
   for i in range(len(lst)-1):
@@ -48,4 +54,4 @@ def pascal_triangle(n):
 
 
 if __name__ == "__main__":
-    print_triangle(pascal_triangle(7))
+    print_triangle(pascal_triangle('w'))
