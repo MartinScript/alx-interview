@@ -13,7 +13,7 @@ def pascal_triangle(n):
 
     Pascal's Triangle is a triangular array of binomial coefficients.
     Each number is the sum of the two directly above it.
-    The function accepts an integer n as input and returns a list of lists 
+    The function accepts an integer n as input and returns a list of lists
     representing the Pascal's Triangle up to the nth row.
 
     Parameters:
