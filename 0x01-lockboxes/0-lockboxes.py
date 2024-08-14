@@ -35,8 +35,8 @@ class Graph:
         adj (list): A list of integers representing the indices of adjacent nodes.
         """
         if node is not None:
-            for i, el in enumerate(adj):
-                node.adj_nodes[el] = self.graph[i]
+            for i in adj:
+                node.adj_nodes.append(self.graph[i])
 
 
 class Node:
@@ -57,7 +57,7 @@ class Node:
 
     def __init__(self, el):
         self.el = el
-        self.adj_nodes = {}
+        self.adj_nodes = []
         self.color = 'white'
         self.distance = 0
         self.parent = None
@@ -77,15 +77,16 @@ def create_graph(boxes):
     graph (Graph): A graph object representing the boxes. The graph contains nodes and their adjacent nodes.
     """
     graph = Graph()
-
     for i in range(len(boxes)):
         node = Node(i)
         graph.add_node(node)
+
     for key, value in graph.graph.items():
         for i, box in enumerate(boxes):
-            if key == i:
+            if i == key:
                 graph.add_adj_nodes(value, box)
     return graph
+
 
 count = 0
 
@@ -103,7 +104,7 @@ def depth_visit(node):
     count += 1
     node.distance = count
     node.color = 'gray'
-    for adj in node.adj_nodes.values():
+    for adj in node.adj_nodes:
         if adj.color == 'white':
             adj.parent = node
             depth_visit(adj)
@@ -144,7 +145,6 @@ def canUnlockAll(boxes):
     """
     graph = create_graph(boxes)
     depth_first_search(graph)
-    graph.get_graph()
     for i in range(1,len(graph.graph)):
         if graph.graph[i].parent == None:
             return False
