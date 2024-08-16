@@ -1,4 +1,14 @@
 #!usr/bin/env python3
+
+"""
+This module contains functions to create a graph representation of boxes and determine if it is possible to unlock all boxes.
+
+Functions:
+createGraph(boxes): Creates a graph representation of the given boxes.
+canUnlockAll(boxes): Determines if it is possible to unlock all boxes in the given configuration.
+"""
+
+
 def createGraph(boxes):
     """
     Creates a graph representation of the given boxes.
