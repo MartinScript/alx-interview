@@ -1,3 +1,4 @@
+#!usr/bin/env python3
 def createGraph(boxes):
     """
     Creates a graph representation of the given boxes.
@@ -8,7 +9,7 @@ def createGraph(boxes):
     Returns:
     Graph: A graph object representing the boxes and their unlocking relationships.
     """
-    graph = __import__('graphs').Graph()
+    graph = __import__("graphs").Graph()
     for i in boxes.keys():
         graph.addNode(i)
     for i, box in boxes.items():
@@ -22,7 +23,7 @@ def canUnlockAll(boxes):
     Determines if it is possible to unlock all boxes in the given configuration.
 
     Parameters:
-    boxes (dict): A dictionary where the keys are box IDs (strings) and the values are lists of box IDs that can unlock the corresponding box.
+    boxes (list of lists): A List where the index are box IDs (strings) and the values are lists of box IDs that can unlock the corresponding box.
 
     Returns:
     bool: True if all boxes can be unlocked, False otherwise.
