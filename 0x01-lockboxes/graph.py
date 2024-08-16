@@ -30,7 +30,7 @@ class Node:
             The element or value of the node.
         """
         self.el = el
-        self.color = 'white'
+        self.color = "white"
         self.distance = 0
         self.parent = None
 
@@ -43,9 +43,9 @@ class Node:
         str
             The string representation of the node.
         """
-        return "{}".format(self.el)
+        return "{}".format(self.__dict__)
 
-        
+
 class Graph:
     __nodeList = {}
     __adjacencyList = {}
@@ -184,12 +184,12 @@ class Graph:
         while self.tree != []:
             u = self.tree.pop()
             for v in self.getEdges(u):
-                if v.color == 'white':
-                    v.color = 'gray'
+                if v.color == "white":
+                    v.color = "gray"
                     v.distance = u.distance + 1
                     v.parent = u
                     self.tree.append(v)
-            u.color == 'black'
+            u.color == "black"
 
     def depthVisit(self, node):
         """
@@ -204,12 +204,12 @@ class Graph:
         # topologicalSort = __import__('linked_list').LinkedList()
         self.count += 1
         node.distance = self.count
-        node.color = 'gray'
+        node.color = "gray"
         for adj in self.getEdges(node):
-            if adj.color == 'white':
+            if adj.color == "white":
                 adj.parent = node
                 self.depthVisit(adj)
-        node.color = 'black'
+        node.color = "black"
         self.count += 1
         node.f = self.count
         # topologicalSort.addNode(node.el)
@@ -226,5 +226,5 @@ class Graph:
         None
         """
         for value in self.__nodeList.values():
-            if value.color == 'white':
+            if value.color == "white":
                 self.depthVisit(value)

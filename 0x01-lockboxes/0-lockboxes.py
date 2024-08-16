@@ -1,4 +1,4 @@
-#!usr/bin/env python3
+#!usr/bin/python3
 
 """
 This module contains functions to create a graph representation of boxes and determine if it is possible to unlock all boxes.
@@ -14,15 +14,15 @@ def createGraph(boxes):
     Creates a graph representation of the given boxes.
 
     Parameters:
-    boxes (dict): A dictionary where the keys are box IDs (strings) and the values are lists of box IDs that can unlock the corresponding box.
+    boxes (list of lists): A list where the index represents box IDs (strings) and the values are lists of box IDs that can unlock the corresponding box.
 
     Returns:
-    Graph: A graph object representing the boxes and their unlocking relationships.
+    graph (Graph): A graph object representing the boxes and their unlocking relationships.
     """
-    graph = __import__("graphs").Graph()
-    for i in boxes.keys():
+    graph = __import__("graph").Graph()
+    for i, box in enumerate(boxes):
         graph.addNode(i)
-    for i, box in boxes.items():
+    for i, box in enumerate(boxes):
         for el in box:
             graph.addEdge(i, el)
     return graph
@@ -40,7 +40,8 @@ def canUnlockAll(boxes):
     """
     graph = createGraph(boxes)
     graph.depthFirstSearch()
-    for i in graph.getNodeList().keys():
+    graph.printGraph()
+    for i in range(1, len(graph.getNodeList())):
         if graph.getNodeList()[i].parent == None:
             return False
     return True
