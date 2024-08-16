@@ -1,152 +1,267 @@
-#!/usr/bin/python3
-class Graph:
-    """
-    A class representing a graph data structure.
-
-    Attributes:
-    graph (dict): A dictionary to store nodes and their adjacent nodes.
-
-    Methods:
-    get_graph(): Prints the graph in the format of node and its attributes.
-    add_node(node): Adds a node to the graph.
-    add_adj_nodes(node, adj): Adds adjacent nodes to a given node.
-    """
-
-    graph = {}
-
-    def add_node(self, node):
-        """
-        Adds a node to the graph.
-
-        Parameters:
-        node (Node): The node to be added to the graph. If the node already exists,
-            it will be replaced with the new node.
-        """
-        if node in self.graph.values():
-            node = self.graph[node.el]
-        self.graph[node.el] = node
-
-    def add_adj_nodes(self, node, adj):
-        """
-        Adds adjacent nodes to a given node.
-
-        Parameters:
-        node (Node): The node to which adjacent nodes will be added.
-        adj (list): A list of integers representing the indices of adjacent nodes.
-        """
-        if node is not None:
-            for i in adj:
-                node.adj_nodes.append(self.graph[i])
-
-
 class Node:
     """
-    A class representing a node in a graph.
+    A class to represent a node in a graph.
 
-    Attributes:
-    el (int): The element stored in the node.
-    adj_nodes (dict): A dictionary to store adjacent nodes.
-    color (str): The color of the node during graph traversal.
-    distance (int): The distance of the node from the starting node during graph traversal.
-    parent (Node): The parent node in the traversal path.
+    Attributes
+    ----------
+    el : str
+        The element or value of the node.
+    color : str
+        The color of the node during graph traversal.
+    distance : int
+        The distance of the node from the source node in a graph traversal.
+    parent : Node
+        The parent node in the traversal tree.
 
-    Methods:
-    __init__(self, el): Initializes a new node with the given element.
-    __str__(self): Returns a string representation of the node.
+    Methods
+    -------
+    __str__() -> str
+        Returns a string representation of the node.
     """
 
     def __init__(self, el):
+        """
+        Constructs all the necessary attributes for the node object.
+
+        Parameters
+        ----------
+        el : str
+            The element or value of the node.
+        """
         self.el = el
-        self.adj_nodes = []
         self.color = 'white'
         self.distance = 0
         self.parent = None
 
-    def __str__(self):
-        return "{}".format(self.__dict__)
+    def __str__(self) -> str:
+        """
+        Returns a string representation of the node.
 
-def create_graph(boxes):
+        Returns
+        -------
+        str
+            The string representation of the node.
+        """
+        return "{}".format(self.el)
+
+        
+class Graph:
+    __nodeList = {}
+    __adjacencyList = {}
+    tree = []
+    count = 0
+
+    def addNode(self, el):
+        """
+        Adds a new node to the graph.
+
+        Parameters:
+        el (str): The element or value of the node.
+
+        Returns:
+        None
+        """
+        node = Node(el)
+        self.__nodeList.setdefault(el, node)
+        self.__adjacencyList.setdefault(node, [])
+
+    def getNode(self, node):
+        """
+        Retrieves a node from the graph based on its element.
+
+        Parameters:
+        node (str): The element of the node.
+
+        Returns:
+        Node: The node object with the given element.
+        """
+        node = self.__nodeList[node]
+        return node
+
+    def addEdge(self, nodeSource, nodeDest):
+        """
+        Adds a directed edge from nodeSource to nodeDest.
+
+        Parameters:
+        nodeSource (str): The element of the source node.
+        nodeDest (str): The element of the destination node.
+
+        Returns:
+        None
+        """
+        nodeSource = self.getNode(nodeSource)
+        nodeDest = self.getNode(nodeDest)
+
+        self.__adjacencyList[nodeSource].append(nodeDest)
+        # For undirected graph
+        # self.adjacencyList[nodeDest].append(nodeSource)
+
+    def getNodeList(self):
+        """
+        Retrieves all nodes in the graph.
+
+        Parameters:
+        None
+
+        Returns:
+        dict: A dictionary containing all nodes in the graph.
+        """
+        return self.__nodeList
+
+    def printGraph(self):
+        """
+        Prints the graph in adjacency list format.
+
+        Parameters:
+        None
+
+        Returns:
+        None
+        """
+        for key, value in self.__adjacencyList.items():
+            if value is not []:
+                print("{} is connected to {}".format(key, value))
+
+    def removeNode(self, node):
+        """
+        Removes a node from the graph.
+
+        Parameters:
+        node (str): The element of the node to be removed.
+
+        Returns:
+        None
+        """
+        if node:
+            for value in self.__adjacencyList.values():
+                value.remove(node)
+            del self.__adjacencyList[node]
+            self.__nodeList.remove(node)
+
+    def removeEdge(self, nodeSource, nodeDest):
+        """
+        Removes a directed edge from nodeSource to nodeDest.
+
+        Parameters:
+        nodeSource (str): The element of the source node.
+        nodeDest (str): The element of the destination node.
+
+        Returns:
+        None
+        """
+        nodeSource = self.__nodeList(nodeSource)
+        nodeDest = self.__nodeList(nodeDest)
+        if not nodeSource or not nodeDest:
+            return
+        self.__adjacencyList[nodeSource].remove(nodeDest)
+
+    def getEdges(self, node):
+        """
+        Retrieves all edges connected to a given node.
+
+        Parameters:
+        node (str): The element of the node.
+
+        Returns:
+        list: A list of nodes connected to the given node.
+        """
+        edges = self.__adjacencyList[node]
+        return edges
+
+    def breadthFirstSearch(self, source):
+        """
+        Performs a breadth-first search traversal on the graph starting from the given source node.
+
+        Parameters:
+        source (str): The element of the source node.
+
+        Returns:
+        None
+        """
+        source = self.getNode(source)
+        self.tree.append(source)
+        while self.tree != []:
+            u = self.tree.pop()
+            for v in self.getEdges(u):
+                if v.color == 'white':
+                    v.color = 'gray'
+                    v.distance = u.distance + 1
+                    v.parent = u
+                    self.tree.append(v)
+            u.color == 'black'
+
+    def depthVisit(self, node):
+        """
+        Performs a depth-first search traversal on the graph starting from the given node.
+
+        Parameters:
+        node (Node): The node to start the traversal from.
+
+        Returns:
+        None
+        """
+        # topologicalSort = __import__('linked_list').LinkedList()
+        self.count += 1
+        node.distance = self.count
+        node.color = 'gray'
+        for adj in self.getEdges(node):
+            if adj.color == 'white':
+                adj.parent = node
+                self.depthVisit(adj)
+        node.color = 'black'
+        self.count += 1
+        node.f = self.count
+        # topologicalSort.addNode(node.el)
+        # topologicalSort.printList()
+
+    def depthFirstSearch(self):
+        """
+        Performs a depth-first search traversal on the entire graph.
+
+        Parameters:
+        None
+
+        Returns:
+        None
+        """
+        for value in self.__nodeList.values():
+            if value.color == 'white':
+                self.depthVisit(value)
+
+
+def createGraph(boxes):
     """
-    This function creates a graph representation of the given boxes.
+    Creates a graph representation of the given boxes.
 
     Parameters:
-    boxes (list of lists): A list of boxes, where each box is represented by a list of integers.
-        Each integer in the box represents an adjacent node.
+    boxes (dict): A dictionary where the keys are box IDs (strings) and the values are lists of box IDs that can unlock the corresponding box.
 
     Returns:
-    graph (Graph): A graph object representing the boxes. The graph contains nodes and their adjacent nodes.
+    Graph: A graph object representing the boxes and their unlocking relationships.
     """
     graph = Graph()
-    for i in range(len(boxes)):
-        node = Node(i)
-        graph.add_node(node)
-
-    for key, value in graph.graph.items():
-        for i, box in enumerate(boxes):
-            if i == key:
-                graph.add_adj_nodes(value, box)
+    for i in boxes.keys():
+        graph.addNode(i)
+    for i, box in boxes.items():
+        for el in box:
+            graph.addEdge(i, el)
     return graph
-
-
-count = 0
-
-def depth_visit(node):
-    """
-    Performs a depth-first search traversal on a graph starting from a given node.
-
-    Parameters:
-    node (Node): The starting node for the depth-first search.
-
-    Returns:
-    None. The function modifies the attributes of the nodes during the traversal.
-    """
-    global count
-    count += 1
-    node.distance = count
-    node.color = 'gray'
-    for adj in node.adj_nodes:
-        if adj.color == 'white':
-            adj.parent = node
-            depth_visit(adj)
-    node.color = 'black'
-    count += 1
-    node.f = count
-
-
-def depth_first_search(graph):
-    """
-    Performs a depth-first search traversal on a given graph.
-
-    Parameters:
-    graph (Graph): The graph object to be traversed. The graph should contain nodes and their adjacent nodes.
-
-    Returns:
-    None. The function modifies the attributes of the nodes during the traversal.
-    Specifically, it sets the 'color', 'distance', 'parent', and 'f' attributes of each node.
-    """
-    for value in graph.graph.values():
-        if value.color == 'white':
-            depth_visit(value)
 
 
 def canUnlockAll(boxes):
     """
-    Determines if all boxes can be unlocked.
-
-    This function creates a graph representation of the given boxes, performs a depth-first search traversal,
-    and checks if all boxes can be unlocked. A box can be unlocked if it is adjacent to an already unlocked box.
+    Determines if it is possible to unlock all boxes in the given configuration.
 
     Parameters:
-    boxes (list of lists): A list of boxes, where each box is represented by a list of integers.
-        Each integer in the box represents an adjacent node.
+    boxes (dict): A dictionary where the keys are box IDs (strings) and the values are lists of box IDs that can unlock the corresponding box.
 
     Returns:
     bool: True if all boxes can be unlocked, False otherwise.
     """
-    graph = create_graph(boxes)
-    depth_first_search(graph)
-    for i in range(1,len(graph.graph)):
-        if graph.graph[i].parent == None:
+    graph = createGraph(boxes)
+    graph.depthFirstSearch()
+    graph.printGraph()
+    for i in graph.getNodeList().keys():
+        if graph.getNodeList()[i].parent == None:
             return False
     return True
-
