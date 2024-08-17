@@ -26,7 +26,6 @@ def createGraph(boxes):
     for i, box in enumerate(boxes):
         for el in box:
             graph.addEdge(i, el)
-    graph.printGraph()
     return graph
 
 
