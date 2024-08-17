@@ -19,30 +19,22 @@ Functions:
 """
 
 
+def createGraph(boxes):
+    graph = __import__('graph').Graph()
+    for i, box in enumerate(boxes):
+        graph.addNode(i)
+    for i, box in enumerate(boxes):
+        for el in box:
+            graph.addEdge(i, el)
+    graph.printGraph()
+    return graph
+
+
 def canUnlockAll(boxes):
-    """
-    Determine if all boxes can be unlocked.
-
-    This function takes a list of boxes, where each box contains a list of keys that can unlock other boxes.
-    The function uses a breadth-first search (BFS) approach to explore all possible paths of unlocking boxes.
-
-    Parameters:
-    boxes (List[List[int]]): A 2D list representing the boxes. Each inner list contains the keys that can unlock the corresponding box.
-
-    Returns:
-    bool: True if all boxes can be unlocked, False otherwise.
-    """
-    n = len(boxes)
-    unlocked = [False] * n  # Track which boxes have been unlocked
-    unlocked[0] = True  # Box 0 is initially unlocked
-    keys = [0]  # Start with the key to the first box
-
-    while keys:
-        current_key = keys.pop(0)
-        for key in boxes[current_key]:
-            if key < n and not unlocked[key]:  # Check if the key unlocks a box
-                unlocked[key] = True
-                # Add the new key to the list to explore further
-                keys.append(key)
-
-    return all(unlocked)  # Check if all boxes were unlocked
+    graph = createGraph(boxes)
+    graph.depthFirstSearch()
+    graph.printGraph()
+    for i in graph.getNodeList().keys():
+        if graph.getNodeList()[i].parent == None:
+            return False
+    return True
