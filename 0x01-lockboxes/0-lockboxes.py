@@ -18,7 +18,6 @@ Functions:
     bool: True if all boxes can be unlocked, False otherwise.
 """
 
-
 def canUnlockAll(boxes):
     """
     Determine if all boxes can be unlocked.
