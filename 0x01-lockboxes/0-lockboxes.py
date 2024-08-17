@@ -89,7 +89,6 @@ def canUnlockAll(boxes):
     """
     graph = createGraph(boxes)
     graph.depthFirstSearch()
-    graph.printGraph()
     for i in range(1, len(graph.getNodeList().keys())):
         if graph.getNodeList()[i].parent == None:
             return False
