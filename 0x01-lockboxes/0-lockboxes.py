@@ -1,4 +1,4 @@
-#!usr/bin/python3
+#!/usr/bin/python3
 """
 Module: Boxes Unlocking
 
@@ -17,6 +17,7 @@ Functions:
     Returns:
     bool: True if all boxes can be unlocked, False otherwise.
 """
+
 
 def canUnlockAll(boxes):
     """
@@ -41,6 +42,7 @@ def canUnlockAll(boxes):
         for key in boxes[current_key]:
             if key < n and not unlocked[key]:  # Check if the key unlocks a box
                 unlocked[key] = True
-                keys.append(key)  # Add the new key to the list to explore further
+                # Add the new key to the list to explore further
+                keys.append(key)
 
     return all(unlocked)  # Check if all boxes were unlocked
