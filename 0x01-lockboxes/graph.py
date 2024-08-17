@@ -80,18 +80,11 @@ class Graph:
         return node
 
     def addEdge(self, nodeSource, nodeDest):
-        """
-        Adds a directed edge from nodeSource to nodeDest.
-
-        Parameters:
-        nodeSource (str): The element of the source node.
-        nodeDest (str): The element of the destination node.
-
-        Returns:
-        None
-        """
         nodeSource = self.getNode(nodeSource)
         nodeDest = self.getNode(nodeDest)
+
+        if nodeSource and nodeDest:
+            self.__adjacencyList[nodeSource].append(nodeDest)
 
         self.__adjacencyList[nodeSource].append(nodeDest)
         # For undirected graph
@@ -120,8 +113,8 @@ class Graph:
         None
         """
         for key, value in self.__adjacencyList.items():
-            if value is not []:
-                print("{} is connected to {}".format(key, value))
+            if value:
+                print("{} is connected to {}".format(key.el, [v.el for v in value]))
 
     def removeNode(self, node):
         """
@@ -226,5 +219,5 @@ class Graph:
         None
         """
         for value in self.__nodeList.values():
-            if value.color == "white":
-                self.depthVisit(value)
+                if value.color == "white":
+                    self.depthVisit(value)

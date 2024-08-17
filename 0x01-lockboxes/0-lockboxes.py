@@ -1,47 +1,47 @@
 #!usr/bin/python3
-
 """
-This module contains functions to create a graph representation of boxes and determine if it is possible to unlock all boxes.
+Module: Boxes Unlocking
+
+This module contains a function to determine if all boxes can be unlocked.
 
 Functions:
-createGraph(boxes): Creates a graph representation of the given boxes.
-canUnlockAll(boxes): Determines if it is possible to unlock all boxes in the given configuration.
-"""
+- canUnlockAll(boxes: List[List[int]]) -> bool:
+    Determine if all boxes can be unlocked.
 
-
-def createGraph(boxes):
-    """
-    Creates a graph representation of the given boxes.
+    This function takes a list of boxes, where each box contains a list of keys that can unlock other boxes.
+    The function uses a breadth-first search (BFS) approach to explore all possible paths of unlocking boxes.
 
     Parameters:
-    boxes (list of lists): A list where the index represents box IDs (strings) and the values are lists of box IDs that can unlock the corresponding box.
+    boxes (List[List[int]]): A 2D list representing the boxes. Each inner list contains the keys that can unlock the corresponding box.
 
     Returns:
-    graph (Graph): A graph object representing the boxes and their unlocking relationships.
-    """
-    graph = __import__("graph").Graph()
-    for i, box in enumerate(boxes):
-        graph.addNode(i)
-    for i, box in enumerate(boxes):
-        for el in box:
-            graph.addEdge(i, el)
-    return graph
+    bool: True if all boxes can be unlocked, False otherwise.
+"""
 
 
 def canUnlockAll(boxes):
     """
-    Determines if it is possible to unlock all boxes in the given configuration.
+    Determine if all boxes can be unlocked.
+
+    This function takes a list of boxes, where each box contains a list of keys that can unlock other boxes.
+    The function uses a breadth-first search (BFS) approach to explore all possible paths of unlocking boxes.
 
     Parameters:
-    boxes (list of lists): A List where the index are box IDs (strings) and the values are lists of box IDs that can unlock the corresponding box.
+    boxes (List[List[int]]): A 2D list representing the boxes. Each inner list contains the keys that can unlock the corresponding box.
 
     Returns:
     bool: True if all boxes can be unlocked, False otherwise.
     """
-    graph = createGraph(boxes)
-    graph.depthFirstSearch()
-    graph.printGraph()
-    for i in range(1, len(graph.getNodeList())):
-        if graph.getNodeList()[i].parent == None:
-            return False
-    return True
+    n = len(boxes)
+    unlocked = [False] * n  # Track which boxes have been unlocked
+    unlocked[0] = True  # Box 0 is initially unlocked
+    keys = [0]  # Start with the key to the first box
+
+    while keys:
+        current_key = keys.pop(0)
+        for key in boxes[current_key]:
+            if key < n and not unlocked[key]:  # Check if the key unlocks a box
+                unlocked[key] = True
+                keys.append(key)  # Add the new key to the list to explore further
+
+    return all(unlocked)  # Check if all boxes were unlocked
